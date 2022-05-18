@@ -1,9 +1,9 @@
 --Llista el nom de tots els productos que hi ha en la taula producto.
-SELECT nombre FROM `producto`;
+SELECT nombre FROM producto;
 --Llista els noms i els preus de tots els productos de la taula producto.
-SELECT nombre, precio FROM `producto`;
+SELECT nombre, precio FROM producto;
 --Llista totes les columnes de la taula producto.
-DESCRIBE `producto`;
+SELECT * FROM  producto;
 --Llista el nom dels productos, el preu en euros i el preu en dòlars nord-americans (USD).
 SELECT nombre , precio, precio*1.04 AS DollarPrice FROM producto
 --Llista el nom dels productos, el preu en euros i el preu en dòlars nord-americans. Utilitza els següents àlies per a les columnes: nom de producto, euros, dòlars nord-americans.
@@ -118,13 +118,14 @@ SELECT count(id) FROM persona WHERE persona.tipo = 'alumno'
 --Calcula quants alumnes van néixer en 1999.
 SELECT count(id) FROM persona WHERE fecha_nacimiento BETWEEN '1999-01-01' AND '1999-12-31' AND persona.tipo = 'alumno' 
 --Calcula quants professors hi ha en cada departament. El resultat només ha de mostrar dues columnes, una amb el nom del departament i una altra amb el nombre de professors que hi ha en aquest departament. El resultat només ha d'incloure els departaments que tenen professors associats i haurà d'estar ordenat de major a menor pel nombre de professors.
+SELECT departamento.nombre, count(profesor.id_profesor) FROM departamento RIGHT JOIN profesor ON departamento.id = profesor.id_departamento GROUP BY departamento.nombre
 
 --Retorna un llistat amb tots els departaments i el nombre de professors que hi ha en cadascun d'ells. Tingui en compte que poden existir departaments que no tenen professors associats. Aquests departaments també han d'aparèixer en el llistat.
-
+SELECT departamento.nombre, count(profesor.id_profesor) FROM departamento LEFT JOIN profesor ON departamento.id = profesor.id_departamento GROUP BY departamento.nombre
 --Retorna un llistat amb el nom de tots els graus existents en la base de dades i el nombre d'assignatures que té cadascun. Tingui en compte que poden existir graus que no tenen assignatures associades. Aquests graus també han d'aparèixer en el llistat. El resultat haurà d'estar ordenat de major a menor pel nombre d'assignatures.
-
+SELECT grado.nombre, count(asignatura.id_grado) FROM grado LEFT JOIN asignatura ON asignatura.id_grado = grado.id GROUP BY grado.nombre ORDER BY count(asignatura.id_grado) DESC
 --Retorna un llistat amb el nom de tots els graus existents en la base de dades i el nombre d'assignatures que té cadascun, dels graus que tinguin més de 40 assignatures associades.
-
+SELECT grado.nombre AS nombre_grado, count(asignatura.id_grado) AS numero_asignaturas FROM grado LEFT JOIN asignatura ON asignatura.id_grado = grado.id GROUP BY grado.nombre HAVING count(asignatura.id_grado) > 40 ORDER BY count(asignatura.id_grado) DESC 
 --Retorna un llistat que mostri el nom dels graus i la suma del nombre total de crèdits que hi ha per a cada tipus d'assignatura. El resultat ha de tenir tres columnes: nom del grau, tipus d'assignatura i la suma dels crèdits de totes les assignatures que hi ha d'aquest tipus.
 
 --Retorna un llistat que mostri quants alumnes s'han matriculat d'alguna assignatura en cadascun dels cursos escolars. El resultat haurà de mostrar dues columnes, una columna amb l'any d'inici del curs escolar i una altra amb el nombre d'alumnes matriculats.
@@ -132,5 +133,5 @@ SELECT count(id) FROM persona WHERE fecha_nacimiento BETWEEN '1999-01-01' AND '1
 --Retorna un llistat amb el nombre d'assignatures que imparteix cada professor. El llistat ha de tenir en compte aquells professors que no imparteixen cap assignatura. El resultat mostrarà cinc columnes: id, nom, primer cognom, segon cognom i nombre d'assignatures. El resultat estarà ordenat de major a menor pel nombre d'assignatures.
 
 --Retorna totes les dades de l'alumne més jove.
-
+SELECT * FROM universidad.persona ORDER BY fecha_nacimiento DESC LIMIT 1;
 --Retorna un llistat amb els professors que tenen un departament associat i que no imparteixen cap assignatura.
